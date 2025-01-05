@@ -4,9 +4,9 @@ import {imagesUpload} from "../multer";
 import {IArtist} from "../types";
 import mongoose from "mongoose";
 
-const artistRouter = express.Router();
+const artistsRouter = express.Router();
 
-artistRouter.get("/", async (_req: express.Request, res: express.Response, next) => {
+artistsRouter.get("/", async (_req: express.Request, res: express.Response, next) => {
     try {
         const artist = await Artist.find();
         res.send(artist);
@@ -15,7 +15,7 @@ artistRouter.get("/", async (_req: express.Request, res: express.Response, next)
     }
 });
 
-artistRouter.post('/', imagesUpload.single('image'),  async (req, res, next) => {
+artistsRouter.post('/', imagesUpload.single('image'),  async (req, res, next) => {
 
     const newArtist: IArtist = {
         name: req.body.name,
@@ -40,4 +40,4 @@ artistRouter.post('/', imagesUpload.single('image'),  async (req, res, next) => 
     }
 });
 
-export default artistRouter;
+export default artistsRouter;
