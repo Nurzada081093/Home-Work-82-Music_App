@@ -10,3 +10,9 @@ export interface IAlbum {
     releaseDate: string;
     image: string | null;
 }
+
+export interface ITrack {
+    album: number;
+    title: string;
+    trackDuration: string;
+}
