@@ -3,16 +3,39 @@ import Album from "../models/Album";
 import mongoose from "mongoose";
 import {ITrack} from "../types";
 import Track from "../models/Track";
+import Artist from "../models/Artist";
 
 const tracksRouter = express.Router();
 
 tracksRouter.get('/', async (req, res, next) => {
     const albumIdQuery = req.query.album;
+    const artistIdQuery = req.query.artist;
 
     try {
-        const filter = albumIdQuery ? {album: albumIdQuery} : {};
-        const tracks = await Track.find(filter);
-        res.send(tracks);
+        if (albumIdQuery) {
+            const tracks = await Track.find({album: albumIdQuery});
+            res.send(tracks);
+            return;
+        }
+
+        if (artistIdQuery) {
+            const artist = await Artist.findById(artistIdQuery);
+
+            if (!artist) {
+                res.status(404).send('Not found this artist!');
+                return;
+            }
+
+            const albums = await Album.find({artist: artistIdQuery});
+            const albumsId = albums.map(album => album._id);
+            const tracks = await Track.find({album: {$in: albumsId}});
+            res.send(tracks);
+            return;
+        }
+
+        const tracksAll = await Track.find();
+        res.send(tracksAll);
+
     } catch (e) {
         next(e);
     }
