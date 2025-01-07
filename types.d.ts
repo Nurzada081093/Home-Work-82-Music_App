@@ -16,3 +16,9 @@ export interface ITrack {
     title: string;
     trackDuration: string;
 }
+
+export interface UserData {
+    username: string;
+    password: string;
+    token: string;
+}
