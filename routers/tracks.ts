@@ -22,7 +22,7 @@ tracksRouter.get('/', async (req, res, next) => {
             const artist = await Artist.findById(artistIdQuery);
 
             if (!artist) {
-                res.status(404).send('Not found this artist!');
+                res.status(404).send({error: 'Not found this artist!'});
                 return;
             }
 
@@ -47,7 +47,7 @@ tracksRouter.post('/', async (req, res, next) => {
         const album = await Album.findById(req.body.album);
 
         if (!album) {
-            res.status(404).send('This album is not found!');
+            res.status(404).send({error: 'This album is not found!'});
             return;
         }
     }
