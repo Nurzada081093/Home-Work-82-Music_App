@@ -33,7 +33,13 @@ tracksRouter.get('/', async (req, res, next) => {
             return;
         }
 
-        const tracksAll = await Track.find();
+        const tracksAll = await Track.find().populate({
+            path: 'album',
+            populate: {
+                path: 'artist',
+                model: 'Artist'
+            }
+        });
         res.send(tracksAll);
 
     } catch (e) {
